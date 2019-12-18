@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="files_for_programming">
+    <CLASSES>
+      <root url="file://$USER_HOME$/files_for_programming/Jama" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/files_for_programming/Jama/doc" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$USER_HOME$/files_for_programming" />
+    </SOURCES>
+    <excluded>
+      <root url="file://$USER_HOME$/files_for_programming/Jama" />
+    </excluded>
+  </library>
+</component>
