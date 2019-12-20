@@ -17,6 +17,6 @@ public class BinomianFunctional extends Binomian{
     }
 
     public double functionMaker(double value){
-        return 1/(2*Math.PI)*Math.exp((-1)*Math.pow(value-super.m , 2)/Math.sqrt(super.s));
+        return 1/(2*Math.PI)*Math.exp((-1)*Math.pow(value-super.m , 2)/super.s);
     }
 }

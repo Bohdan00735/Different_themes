@@ -6,6 +6,10 @@ public class ErrorsCalculator {
     double p;
     double c1;
     double c2;
+    double s1;
+    double s2;
+    double m1;
+    double m2;
 
     public ErrorsCalculator(BinomianFunctional b1, BinomianFunctional b2, double p, double c1, double c2) {
         this.b1 = b1;
@@ -13,6 +17,10 @@ public class ErrorsCalculator {
         this.p = p;
         this.c1 = c1;
         this.c2 = c2;
+        s1 = b1.getS();
+        s2 = b2.getS();
+        m1 = b1.getM();
+        m2 = b2.getM();
     }
 
     public float[] calculate(){
@@ -35,10 +43,6 @@ public class ErrorsCalculator {
     }
 
     public double[] calculateBOunds(){
-        double s1 = b1.getS();
-        double s2 = b2.getS();
-        double m1 = b1.getM();
-        double m2 = b2.getM();
         double l = p*c1/((1-p)*c2);
 
         double a = s2*s2-s1*s1;
@@ -49,6 +53,21 @@ public class ErrorsCalculator {
         double y2 = (-b+Math.sqrt(d))/(2*a);
 
         return new double[]{y1,y2};
+    }
+
+    public double calculateAndOutNP(){
+        System.out.printf("e^((x-%.1f)/(%.1f)-(x-%.1f)/(%.1f)) < p*C0/((1-p)*C1) = %.1f \n",
+                m1,s1,m2,s2,p*c1/((1-p)*c2));
+
+        double value = ((s1*s2*Math.log(p*c1/((1-p)*c2))+m1*s2-m2*s1)/(s2-s1));
+        System.out.println("From criterion of Neiman Pirs x is lower than: " + value);
+        return value;
+    }
+
+    public double findPointOfIntersection(){
+        double res = (m2*s1-m1*s2)/(s1-s2);
+        System.out.printf("Point of Intersection is %.1f \n", res);
+        return res;
     }
 
     public boolean expression(double x){
