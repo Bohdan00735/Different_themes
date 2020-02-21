@@ -56,21 +56,51 @@ public class ErrorsCalculator {
     }
 
     public double calculateAndOutNP(){
-        System.out.printf("e^((x-%.1f)/(%.1f)-(x-%.1f)/(%.1f)) < p*C0/((1-p)*C1) = %.1f \n",
+        System.out.printf("e^((((x-%.1f)/(%.1f))^2)/2-(((x-%.1f)/(%.1f))^2)/2 < p*C0/((1-p)*C1) = %.1f \n",
                 m1,s1,m2,s2,p*c1/((1-p)*c2));
 
-        double value = ((s1*s2*Math.log(p*c1/((1-p)*c2))+m1*s2-m2*s1)/(s2-s1));
-        System.out.println("From criterion of Neiman Pirs x is lower than: " + value);
-        return value;
+        double a = square(s2)- square(s1);
+        double b = 2*(m2*square(s1)-m1*square(s2));
+        double c = square(m1)*square(s2)-square(m2)*square(s1)-2*square(s1)*square(s2)*Math.log(p*c1/((1-p)*c2));
+        double result = calculsteAndChoise(a,b,c);
+        System.out.println("From criterion of Neiman Pirson x is lower than: " + result);
+        return result;
     }
 
     public double findPointOfIntersection(){
-        double res = (m2*s1-m1*s2)/(s1-s2);
+
+        double a = square(s2)- square(s1);
+        double b = 2*(m2*square(s1)-m1*square(s2));
+        double c = square(m1)*square(s2)-square(m2)*square(s1);
+        double res = calculsteAndChoise(a,b,c);
+
         System.out.printf("Point of Intersection is %.1f \n", res);
         return res;
     }
 
     public boolean expression(double x){
         return b2.functionMaker(x)/b1.functionMaker(x) < p*c1/((1-p)*c2);
+    }
+
+    public double square(double x){return x*x;}
+
+    public double[] unleashSquareEquation(double a, double b, double c){
+        double x1 = (-1*b + Math.sqrt(square(b) -4*a*c))/(2*a);
+        double x2 = (-1*b - Math.sqrt(square(b)-4*a*c))/(2*a);
+        return new double[]{x1, x2};
+    }
+
+    public double calculsteAndChoise(double a,double b,double c){
+        double[] results = unleashSquareEquation(a,b,c);
+        double res;
+
+        double x1 = results[0];
+        double x2 = results[1];
+        if(x1 < b1.n){
+            res = x1;
+        }else {
+            res = (x2 < b1.n)?  x2 : 0;
+        }
+        return res;
     }
 }

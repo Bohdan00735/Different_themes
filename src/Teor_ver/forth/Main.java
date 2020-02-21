@@ -3,10 +3,10 @@ package Teor_ver.forth;
 public class Main {
     public static void main(String[] args) {
         int numOfCycles = 50000;
-        BinomianFunctional b1 = new BinomianFunctional(50,0.6,numOfCycles);
-        BinomianFunctional b2 = new BinomianFunctional(60,0.4,numOfCycles);
+        BinomianFunctional b1 = new BinomianFunctional(40,0.4,numOfCycles);
+        BinomianFunctional b2 = new BinomianFunctional(40,0.7,numOfCycles);
 
-        ErrorsCalculator calculator = new ErrorsCalculator(b1,b2,0.6,1,2);
+        ErrorsCalculator calculator = new ErrorsCalculator(b1,b2,0.5,1,1);
 
         float[] res = calculator.calculate();
         double[] bounds = calculator.calculateBOunds();
