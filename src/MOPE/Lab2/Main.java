@@ -1,4 +1,4 @@
-package MOPE.Lab1;
+package MOPE.Lab2;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +14,14 @@ public class Main  extends JFrame {
     }
 
     public static void createGUI() {
-        JFrame frame = new JFrame("Test frame");
+        JFrame frame = new JFrame("Full-factor experiment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Modeling modeling = new Modeling(1,2,3,4,20);
-        String[] columnNames = {"№", "X1", "X2", "X3", "Y" , "XN1", "XN2", "XN3"};
-        JTable table = new JTable(modeling.combineAll(), columnNames);
-        int minIndex = modeling.findIndexOfMin(modeling.getY());
-        table.setRowSelectionInterval(minIndex,minIndex);
+        FullFactorExperiment experiment = new FullFactorExperiment();
+        experiment.setAll(2,70,20,65,25,30,130);
+        experiment.mainProcess();
+        String[] columnNames = {"X1", "X2", "Y1", "Y2" , "Y3", "Y4"};
+
+        JTable table = new JTable(experiment.getY(), columnNames);
 
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -31,6 +32,7 @@ public class Main  extends JFrame {
         frame.setVisible(true);
     }
 }
+
 
 
 

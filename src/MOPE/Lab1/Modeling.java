@@ -47,9 +47,9 @@ public class Modeling {
     }
 
     private void calculate(){
-        x01 = (float)(findMax(x1)+ findMin(x1))/2;
-        x02 = (float)(findMax(x2)+ findMin(x2))/2;
-        x03 = (float)(findMax(x3)+ findMin(x3))/2;
+        x01 = (float)(findMax(x1) + findMin(x1))/2;
+        x02 = (float)(findMax(x2) + findMin(x2))/2;
+        x03 = (float)(findMax(x3) + findMin(x3))/2;
 
         dx1 = x01 - findMin(x1);
         dx2 = x02 - findMin(x2);
@@ -91,7 +91,7 @@ public class Modeling {
     }
 
     public String[][] combineAll(){
-        String[][] data = new String[10][8];
+        String[][] data = new String[12][8];
         String[] firstCol = {"1", "2", "3", "4", "5", "6", "7", "8", "X0", "dx"};
 
         for (int i = 0; i < 8; i++) {
@@ -112,6 +112,10 @@ public class Modeling {
         data[9][1] = String.valueOf(dx1);
         data[9][2] = String.valueOf(dx2);
         data[9][3] = String.valueOf(dx3);
+
+        data[10][0] = "Yet";
+        data[10][1] = String.valueOf(yBencchmark);
+
 
         return data;
     }
