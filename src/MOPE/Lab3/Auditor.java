@@ -80,6 +80,7 @@ public class Auditor {
 
     void identifySignificantOnes(double tTable, double[] tetas, double[] bCoefficients, int[][] naturalisedFactors){
         ArrayList<Integer> significant = new ArrayList<>();
+        // check what coefficients is significant add sort them, after that calculate and only with  significant
         for (int i = 0; i < tetas.length; i++) {
             if (tetas[i] < tTable){
                 System.out.printf("b%d isn`t significant because t%d < %.2f\n",i+1,i+1,tTable);
@@ -89,7 +90,6 @@ public class Auditor {
         StringBuilder stringBuilder = new StringBuilder();
         studentResults = new double[4];
         int i =0;
-
         for (int[] naturalisedFactor : naturalisedFactors) {
             double intermediateResult = 0;
             for (int elem : significant

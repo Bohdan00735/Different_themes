@@ -40,35 +40,6 @@ public class MatrixCalculator {
         }return doubles;
     }
 
-    int[][] cutSomeColumn(int[][] matrix, int column){
-        // matrix should be square
-        int[][] doubles = new int[matrix.length - 1][matrix[0].length - 1];
-        int rowToWrite = 0;
-        int columnToWrite = 0;
-        for (int[] ints : matrix) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (j != column) {
-                    doubles[rowToWrite][columnToWrite] = ints[j];
-                    columnToWrite++;
-                }
-            }
-            columnToWrite = 0;
-            rowToWrite++;
-        }
-        return doubles;
-    }
-
-    double[] cutElem(double[] array, int position){
-        double[] result = new double[array.length-1];
-        int writePosition = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (i != position){
-                result [writePosition] = array[i];
-                writePosition++;
-            }
-        }return result;
-    }
-
     double sumOfDivisionInSquare(double[] first, double[] second){
         double result = 0;
         for (int i = 0; i < first.length; i++) {
@@ -109,6 +80,7 @@ public class MatrixCalculator {
     }
 
     public double calculateSumTwoArrayForEach(int[] first, double[] second){
+        // look through all elem in both arrays and multiply elements with the same index, returns sum of it
         double result = 0;
         if (first.length == second.length){
             for (int i = 0; i < first.length; i++) {

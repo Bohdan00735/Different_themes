@@ -3,7 +3,7 @@ package MOPE.Lab3;
 
 import MOPE.Lab2.FullFactorExperiment;
 
-public class FractionalThreefactorExperiment extends FullFactorExperiment {
+public class FractionalThreefactorExperiment extends FullFactorExperiment {// extends for using some methods
     int[][] naturalizedFactorValues;
     int[][] normalizedFactorValues;
     int [][] yExperimentalValues;
@@ -17,6 +17,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {
     double[] yMediums;
 
     String[][] makeTable(){
+        // set table for print in future
         String[][] result = new String[8][m+4];
         for (int i = 0; i < normalizedFactorValues.length; i++) {
             for (int j = 0; j < normalizedFactorValues[0].length; j++) {
@@ -57,6 +58,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {
         //find medium values of function for rows
         yMediums = calculateMediums(yExperimentalValues);
         double mediumY = calculateSumDouble(yMediums)/yMediums.length;
+        // get each column of factors
         int[] firstColumnInNaturalized = matrixCalculator.getColumn(0,naturalizedFactorValues);
         int[] secondColumnInNaturalized = matrixCalculator.getColumn(1,naturalizedFactorValues);
         int[] thirdColumnInNaturalized = matrixCalculator.getColumn(2,naturalizedFactorValues);
@@ -80,16 +82,18 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {
         double a23 =  matrixCalculator.calculateSumTwoArrayForEach(secondColumnInNaturalized,
                 converIntArrayToDoubleArray(thirdColumnInNaturalized))/4;// a23 = a32
 
+        //make our base matrix for determinant
         matrixCalculator.formMatrixOfTheFourthOrder(1, mx1, mx2,mx3,
                                                     mx1,a11,a12,a13,
                                                     mx2,a12,a22,a23,
                                                     mx3,a13,a23,a33);
 
-        double[] columnToChange = new double[]{mediumY, a1,a2,a3};
+        double[] columnToChange = new double[]{mediumY, a1,a2,a3};// our right part of equation
         makeCalculationOfBCoefficient(columnToChange);
     }
 
     void makeAudit(){
+        // start of all audit methods
         auditor.checkRegressionEquation(bCoefficents, naturalizedFactorValues, yMediums);
         double[] dispersions = new double[yMediums.length];
         for (int i = 0; i < dispersions.length; i++) {
@@ -103,6 +107,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {
     }
 
     void makeCalculationOfBCoefficient(double[] changeColumn){
+
         double mainDeterminant = matrixCalculator.calculateDeterminant();
         for (int i = 0; i < bCoefficents.length; i++) {
             // there we calculate each coefficient by division determinant of changed matrix on main matrix determinant
@@ -136,6 +141,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {
     }
 
     void fillByCoefficients(int[][] matrix,int x1Min, int x1Max, int x2Max, int x2Min, int x3Max, int x3Min){
+        //bringing together all data in right order as in plan matrix
         matrix[0] = new int[]{x1Min, x2Min, x3Min};
         matrix[1] = new int[]{x1Min, x2Max, x3Max};
         matrix[2] = new int[]{x1Max, x2Min, x3Max};
