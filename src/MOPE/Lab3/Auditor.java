@@ -1,10 +1,6 @@
 package MOPE.Lab3;
-
 import org.apache.commons.math3.util.Precision;
 
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 

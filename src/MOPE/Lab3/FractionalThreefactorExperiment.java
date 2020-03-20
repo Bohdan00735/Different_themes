@@ -1,6 +1,5 @@
 package MOPE.Lab3;
 
-
 import MOPE.Lab2.FullFactorExperiment;
 
 public class FractionalThreefactorExperiment extends FullFactorExperiment {// extends for using some methods
