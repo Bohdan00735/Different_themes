@@ -1,6 +1,5 @@
 package MOPE.Lab4;
 
-import MOPE.Lab3.FractionalThreefactorExperiment;
 
 import javax.swing.*;
 import java.awt.*;
