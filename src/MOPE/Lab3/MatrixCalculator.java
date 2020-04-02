@@ -88,8 +88,7 @@ public class MatrixCalculator {
         return result;
     }
 
-
-    int[] getColumn(int column, int[][] array){
+    public int[] getColumn(int column, int[][] array){
         int[] result = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             result[i] = array[i][column];

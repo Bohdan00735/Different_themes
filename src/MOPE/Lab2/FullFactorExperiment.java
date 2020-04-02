@@ -97,6 +97,18 @@ public class FullFactorExperiment {
         return result;
     }
 
+    public int[][] generateInDiap(int raws) {
+        int[][] result = new int[raws][m];
+        Random random = new Random();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <raws ; j++) {
+                double var = yMax-yMin;
+                result[j][i] = (int)(Math.random()*++(var)+yMin);
+            }
+        }
+        return result;
+    }
+
 
     private boolean verifyHomogeneity(){
         mediumValuesOfy = calculateMediums(y);
@@ -134,7 +146,7 @@ public class FullFactorExperiment {
     public double[] calculateMediums(int[][] mass){
         double[] result = new double[mass.length];
         for (int i = 0; i < mass.length; i++) {
-            result[i] += calculateSum(mass[i])/mass[0].length;
+            result[i] += calculateSum(mass[i])/mass[i].length;
         }
         return result;
     }
@@ -154,6 +166,14 @@ public class FullFactorExperiment {
             result += Math.pow((i - medium), 2);
         }
         return result/mass.length;
+    }
+
+    public double[] calculateDispersionMatrix(int[][]experementalMatrix){
+        double[] midlesArray = calculateMediums(experementalMatrix);
+        double[] dispersions = new double[midlesArray.length];
+        for (int i = 0; i < dispersions.length; i++) {
+            dispersions[i] = calculateDispersion(midlesArray[i], experementalMatrix[i]);
+        }return dispersions;
     }
 
     public void calculateNormCoefficient(){

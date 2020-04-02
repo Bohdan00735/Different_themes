@@ -7,8 +7,42 @@ import java.util.HashMap;
 import static java.lang.StrictMath.sqrt;
 
 public class Auditor {
-    double[] KohrenTable = new double[]{0.9065,0.7679,0.6841,0.6287,0.5892,0.5598,0.5365,0.5175, 0.5017, 0.4884};
-    // there`re data for f2 = 4 and m lower then 11, q = 0.05
+    double[][] KohrenTable = new double[][]{{0.9065,0.7679,0.6841,0.6287,0.5892,0.5598,0.5365,0.5175, 0.5017, 0.4884,0.25},//f2=4
+                                            {0.6798, 0.5157,0.4377,3910,3595,3362,3185,3043,0.2926,0.2829,0.1250}};//f2 = 8
+    // there`re data for f2 = 4 or 8 and last num in each row for inf, q = 0.05
+
+    double[][] FisherTable = new double[][]{
+            {0,1,2,3,4,5,6,12,24,1000},//100 - inf, 0 - column for f3
+            {1,164.4,199.5,215.7,224.6,230.2,234.0,244.9,249.0,254.3},
+            {2,18.5,19.2,19.2,19.3,19.3,19.3,19.4,19.4,19.5},
+            {3,10.1,9.6,9.3,9.1,9.0,8.9,8.7,8.6,8.5},
+            {4,7.7,6.9,6.6,6.4,6.3,6.2,5.9,5.8,5.6},
+            {5,6.6,5.8,5.4,5.2,5.1,5.0,4.7,4.5,4.4},
+            {6,6.0,5.1,4.8,4.5,4.4,4.3,4.0,3.8,3.7},
+            {7,5.5,4.7,4.4,4.1,4.0,3.9,3.6,3.4,3.2},
+            {8,5.3,4.5,4.1,3.8,3.7,3.6,3.3,3.1,2.9},
+            {9,5.1,4.3,3.9,3.6,3.5,3.4,3.1,2.9,2.7},
+            {10,5.0,4.1,3.7,3.5,3.3,3.2,2.9,2.7,2.5},
+            {11,4.8,4.0,3.6,3.4,3.2,3.1,2.8,2.6,2.4},
+            {12,4.8,3.9,3.5,3.3,3.1,3.0,2.7,2.5,2.3},
+            {13,4.7,3.8,3.4,3.2,3.0,2.9,2.6,2.4,2.2},
+            {14,4.6,3.7,3.3,3.1,3.0,2.9,2.5,2.3,2.1},
+            {15,4.5,3.7,3.3,3.1,2.9,2.8,2.5,2.3,2.1},
+            {16,4.5,3.6,3.2,3.0,2.9,2.7,2.4,2.2,2.0},
+            {17,4.5,3.6,3.2,3.0,2.8,2.7,2.4,2.2,2.0},
+            {18,4.4,3.6,3.2,2.9,2.8,2.7,2.3,2.1,1.9},
+            {19,4.4,3.5,3.1,2.9,2.7,2.6,2.3,2.1,1.9},
+            {20,4.4,3.5,3.1,2.9,2.7,2.6,2.3,2.1,1.9},
+            {22,4.3,3.4,3.1,2.8,2.7,2.6,2.2,2.0,1.8},
+            {24,4.3,3.4,3.0,2.8,2.6,2.5,2.2,2.0,1.7},
+            {26,4.2,3.4,3.0,2.7,2.6,2.5,2.2,2.0,1.7},
+            {28,4.2,3.3,3.0,2.7,2.6,2.4,2.1,1.9,1.7},
+            {30,4.2,3.3,2.9,2.7,2.5,2.4,2.1,1.9,1.6},
+            {40,4.1,3.2,2.9,2.6,2.5,2.3,2.0,1.8,1.5},
+            {60,4.0,3.2,2.8,2.5,2.4,2.3,1.9,1.7,1.4},
+            {120,3.9,3.1,2.7,2.5,2.3,2.2,1.8,1.6,1.3},
+            {1000,3.8,3.0,2.6,2.4,2.2,2.1,1.8,1.5,1.0}};
+
 
     int f1,f2,f3,f4;
     int d;
@@ -19,7 +53,7 @@ public class Auditor {
     MatrixCalculator matrixCalculator = new MatrixCalculator();
 
     public Auditor() {
-        //fill Student`s factor N = 4 - const, so we can add only raws that multiple to N
+        //fill Student`s factor N = 4 or 8 - const, so we can add only raws that multiple to N
         Student.put(8,2.306);
         Student.put(12,2.179);
         Student.put(16, 2.120);
@@ -38,7 +72,7 @@ public class Auditor {
                     output.append(Precision.round(bCoefficient[j],2));
                 }else {
                     intermediateResult += bCoefficient[j]*factors[i][j-1];
-                    output.append("+").append(Precision.round(bCoefficient[j],2)).append("*").
+                    output.append(" + ").append(Precision.round(bCoefficient[j],2)).append("*").
                             append(Precision.round(factors[i][j-1],2));
                 }
             }
@@ -52,7 +86,13 @@ public class Auditor {
         this.f1 = f1;
         this.f2 = f2;
         double gp = findMax(dispersions)/calculateSum(dispersions);
-        return gp < KohrenTable[f1];
+        int raw = 0;
+        if (f2 == 8) {raw = 1;}// we get only 4 or 8 in this case, f2 = N
+        try {
+            return gp < KohrenTable[raw][f1];
+        }catch (IndexOutOfBoundsException e){
+            return gp < KohrenTable[raw][KohrenTable.length-1];//compare with value for inf
+        }
     }
 
     public void checkStudent(double[] dispersions, int m,double[] yMediums, int[][] normalisedCoefficients,
@@ -60,17 +100,18 @@ public class Auditor {
         s2B = calculateSum(dispersions)/dispersions.length;
         double sFromB = sqrt(s2B/(dispersions.length*m));
         double[] betaValues = new double[dispersions.length];
-        betaValues[0] = matrixCalculator.calculateSumTwoArrayForEach(new int[]{1,1,1,1},yMediums);// column with x0 = 1
+        double[] thetaValues = new double[betaValues.length];
+        betaValues[0] = calculateSum(yMediums)/yMediums.length;// first column fill by 1
+        thetaValues[0] = betaValues[0]/(sFromB);
+
         for (int i = 1; i < betaValues.length; i++) {
             betaValues[i] = matrixCalculator.calculateSumTwoArrayForEach
-                    (matrixCalculator.getColumn(i-1,normalisedCoefficients),yMediums);
-        }
-        double[] thetaValues = new double[betaValues.length];
-        for (int i = 0; i < thetaValues.length; i++) {
+                    (matrixCalculator.getColumn(i-1,normalisedCoefficients),yMediums)/yMediums.length;
             thetaValues[i] = betaValues[i]/sFromB;
         }
+
         f3 = f1*f2;
-        double tetaTable = Student.get(f3);
+        double tetaTable = (Student.get(f3) != null)? Student.get(f3) : 1.960;//value for infinity
         identifySignificantOnes(tetaTable,thetaValues,bCoefficients,naturalisedFactors);
     }
 
@@ -84,8 +125,8 @@ public class Auditor {
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        studentResults = new double[4];
-        int i =0;
+        studentResults = new double[f2];//f2 = N
+        int i = 0;
         for (int[] naturalisedFactor : naturalisedFactors) {
             double intermediateResult = 0;
             for (int elem : significant
@@ -109,13 +150,40 @@ public class Auditor {
         d = significant.size();
     }
 
-    void checkFisher(int m, double[] yMediums){
-        f4 = 4-d;// N always 4 in our case
-        double sAD = m/(double)(f4)*matrixCalculator.sumOfDivisionInSquare(studentResults,yMediums);
-        double fp = sAD/s2B;
-        //the table is big and dispersion of values to, so I just print it and user should determine adequacy independently
-        System.out.printf("For Fisher:\n f3 = %d f4 = %d , Fp %.2f \n Check table for determine",f3,f4,fp);
+    public boolean checkFisher(int m, double[] yMediums){
+        f4 = f2-d;// N = f2
+        double sAD = ((double) m/(double) (f4)*matrixCalculator.sumOfDivisionInSquare(studentResults,yMediums));
+        float fp = (float) (sAD/s2B);
+        int raw = findNextValueInColumnFisher(f3,0);
+        int column = findNextValueInRowFisher(f4,0);
+        raw = (raw == -1)? FisherTable.length-1:raw;// choose raw for inf
+        column = (column == -1)? FisherTable[0].length-1:column;// choose column for inf
+        double ft = FisherTable[raw][column];
+        if (fp < ft){
+            System.out.println("the equation is adequate by Fisher with level of significance == 0,5");
+            return true;
+        }else {return false;}
     }
+
+
+    public int findNextValueInColumnFisher(int value, int column){
+        //return -1 if value bigger than each from column
+        //In another case return num of raw with this value or with value next after that
+        for (int i = 0; i <FisherTable.length; i++) {
+            if(FisherTable[i][column] >= value){return i;}
+        }
+        return -1;
+    }
+
+    public int findNextValueInRowFisher(int value, int raw) throws NullPointerException{
+        //return -1 if value bigger than each from row
+        //In another case return num of column with this value or with value next after that
+        for (int i = 0; i < FisherTable[raw].length; i++) {
+            if(FisherTable[raw][i] >= value){return i;}
+        }
+        return -1;
+    }
+
 
     double findMax(double[] array){
         double result = array[0];
