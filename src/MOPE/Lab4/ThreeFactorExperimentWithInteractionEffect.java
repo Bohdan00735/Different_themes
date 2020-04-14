@@ -27,8 +27,8 @@ public class ThreeFactorExperimentWithInteractionEffect extends FractionalThreef
 
     void naturalizeCoefficients(){
         for (int i = 1; i < bCoefficents.length; i++) {
-            int xmax = findMaxInColumn(naturalizedFactorValues,i-1);
-            int xmin = findMinInColumn(naturalizedFactorValues, i-1);
+            double xmax = findMaxInColumn(naturalizedFactorValues,i-1);
+            double xmin = findMinInColumn(naturalizedFactorValues, i-1);
             double xi0 = (xmax+xmin)/2.0;
             double xi = Math.abs(xmax-xmin)/2.0;
             bCoefficents[0] -= bCoefficents[i]*(xi0/xi);
@@ -36,7 +36,7 @@ public class ThreeFactorExperimentWithInteractionEffect extends FractionalThreef
         }
     }
 
-    int findMaxInColumn(int[][] matrix, int column){
+    public int findMaxInColumn(int[][] matrix, int column){
         int result = matrix[0][column];
         for (int[] raw:matrix
              ) {
@@ -44,49 +44,66 @@ public class ThreeFactorExperimentWithInteractionEffect extends FractionalThreef
         }return result;
     }
 
-    int findMinInColumn(int[][] matrix, int column){
-        int result = matrix[0][column];
-        for (int[] raw:matrix
+    public double findMaxInColumn(double[][] matrix, int column){
+        double result = matrix[0][column];
+        for (double[] raw:matrix
+        ) {
+            if (raw[column] > result){result = raw[column];}
+        }return result;
+    }
+
+    public double findMinInColumn(double[][] matrix, int column){
+        double result = matrix[0][column];
+        for (double[] raw:matrix
         ) {
             if (raw[column] < result){result = raw[column];}
         }return result;
     }
 
-    void addInteractionEffect(){
+    public void addInteractionEffect(){
         System.out.println("add Interaction Effect \n y = bo + b1*x1 + b2*x2 + b3*x3 + b12*x1*x2" +
                 " + b13*x1*x3 + b23*x2*x3 + b123*x1*x2*x3");
         N = 8;
         m = 3;
-        naturalizedFactorValues = addFactors(xValues);
-        normalizedFactorValues = addFactors(new int[][]{{-1,1},{-1,1},{-1,1}});
+        naturalizedFactorValues = addInteractionFactors(addParams(xValues, new double[8][7]));
+        normalizedFactorValues = addInteractionFactors(
+                addParams(new int[][]{{-1,1},{-1,1},{-1,1}}, new double[8][7]));
     }
 
     public void generateNewExperementalValues(){
         yExperimentalValues = generateInDiap(N);
     }
 
-    public int[][] addFactors(int[][] xValues){
+    public double[][] addInteractionFactors(double[][] table){
         //rewrite plan table
-        int[][] newTable = new int[8][7];//size of the plan matrix for Three Factor Experiment With Interaction Effect
-        byte config = 0;
-        for (int [] raw:newTable
+
+        //size of the plan matrix for Three Factor Experiment With Interaction Effect
+
+        for (double [] raw:table
              ) {
-            int index = Integer.toBinaryString(config).length() - 1;
-            for (int i = 2; i >= 0; i--) {
-                try{
-                    raw[i] = xValues[i][Character.getNumericValue(Integer.toBinaryString(config).charAt(index))];
-                }catch (StringIndexOutOfBoundsException e){
-                    raw[i] = xValues[i][0];// in case when config < 100b
-                }
-                index--;
-            }
-            config++;
             raw[3] = raw[0]*raw[1];
             raw[4] = raw[0]*raw[2];
             raw[5] = raw[1]*raw[2];
             raw[6] = raw[0]*raw[1]*raw[2];
         }
-        return newTable;
+        return table;
     }
 
+    public double[][] addParams(int[][] xValues, double[][] table){
+        //size of the plan matrix for Three Factor Experiment With Interaction Effect
+        byte config = 0;
+        for (double [] raw:table
+        ) {
+            int index = Integer.toBinaryString(config).length() - 1;
+            for (int i = 2; i >= 0; i--) {
+                try {
+                    raw[i] = xValues[i][Character.getNumericValue(Integer.toBinaryString(config).charAt(index))];
+                } catch (StringIndexOutOfBoundsException e) {
+                    raw[i] = xValues[i][0];// in case when config < 100b
+                }
+                index--;
+            }
+            config++;
+        }return table;
+    }
 }

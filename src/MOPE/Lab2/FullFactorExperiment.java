@@ -159,6 +159,14 @@ public class FullFactorExperiment {
         }return result;
     }
 
+    public double calculateSum(double [] mass){
+        double result = 0;
+        for (double i:mass
+        ) {
+            result+=i;
+        }return result;
+    }
+
     public double calculateDispersion(double medium, int[] mass){
         double result = 0;
         for (int i :

@@ -8,7 +8,8 @@ import static java.lang.StrictMath.sqrt;
 
 public class Auditor {
     double[][] KohrenTable = new double[][]{{0.9065,0.7679,0.6841,0.6287,0.5892,0.5598,0.5365,0.5175, 0.5017, 0.4884,0.25},//f2=4
-                                            {0.6798, 0.5157,0.4377,3910,3595,3362,3185,3043,0.2926,0.2829,0.1250}};//f2 = 8
+                                            {0.6798, 0.5157,0.4377,3910,3595,3362,3185,3043,0.2926,0.2829,0.1250},
+            {4.709,3.346,2.758,2.419,2.159,2.034,1.911,1.815,1.736,1.671,1.429,1.144,0.889,0.667}};//f2 = 8
     // there`re data for f2 = 4 or 8 and last num in each row for inf, q = 0.05
 
     double[][] FisherTable = new double[][]{
@@ -62,7 +63,7 @@ public class Auditor {
         Student.put(28, 2.048);
     }
 
-    public void checkRegressionEquation(double[] bCoefficient, int[][] factors, double[] mediumY){
+    public void checkRegressionEquation(double[] bCoefficient, double[][] factors, double[] mediumY){
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < mediumY.length; i++) {
             double intermediateResult = 0;
@@ -87,7 +88,10 @@ public class Auditor {
         this.f2 = f2;
         double gp = findMax(dispersions)/calculateSum(dispersions);
         int raw = 0;
-        if (f2 == 8) {raw = 1;}// we get only 4 or 8 in this case, f2 = N
+        switch (f2){
+            case 8: raw = 1;
+            case 15: raw = 2;
+        }// we get only 4 or 8 or 15 in this case, f2 = N
         try {
             return gp < KohrenTable[raw][f1];
         }catch (IndexOutOfBoundsException e){
@@ -95,11 +99,11 @@ public class Auditor {
         }
     }
 
-    public void checkStudent(double[] dispersions, int m,double[] yMediums, int[][] normalisedCoefficients,
-                                double[] bCoefficients, int[][] naturalisedFactors){
+    public void checkStudent(double[] dispersions, int m,double[] yMediums, double[][] normalisedCoefficients,
+                                double[] bCoefficients, double[][] naturalisedFactors){
         s2B = calculateSum(dispersions)/dispersions.length;
         double sFromB = sqrt(s2B/(dispersions.length*m));
-        double[] betaValues = new double[dispersions.length];
+        double[] betaValues = new double[bCoefficients.length];
         double[] thetaValues = new double[betaValues.length];
         betaValues[0] = calculateSum(yMediums)/yMediums.length;// first column fill by 1
         thetaValues[0] = betaValues[0]/(sFromB);
@@ -115,7 +119,7 @@ public class Auditor {
         identifySignificantOnes(tetaTable,thetaValues,bCoefficients,naturalisedFactors);
     }
 
-    void identifySignificantOnes(double tTable, double[] tetas, double[] bCoefficients, int[][] naturalisedFactors){
+    void identifySignificantOnes(double tTable, double[] tetas, double[] bCoefficients, double[][] naturalisedFactors){
         ArrayList<Integer> significant = new ArrayList<>();
         // check what coefficients is significant add sort them, after that calculate and only with  significant
         for (int i = 0; i < tetas.length; i++) {
@@ -127,7 +131,7 @@ public class Auditor {
         StringBuilder stringBuilder = new StringBuilder();
         studentResults = new double[f2];//f2 = N
         int i = 0;
-        for (int[] naturalisedFactor : naturalisedFactors) {
+        for (double[] naturalisedFactor : naturalisedFactors) {
             double intermediateResult = 0;
             for (int elem : significant
             ) {

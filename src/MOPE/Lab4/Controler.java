@@ -36,6 +36,7 @@ public class Controler {
 
         if (auditor.checkFisher(experiment.m,experiment.calculateMediums(experiment.yExperimentalValues))){
             gui = new GUI(experiment.m, experiment.makeTable());
+            gui.formFactorColumnNames();
             gui.start();
         }else{
             wayToDO=true;
@@ -54,6 +55,7 @@ public class Controler {
 
         if (auditor.checkFisher(experiment.m,experiment.calculateMediums(experiment.yExperimentalValues))){
             gui = new GUI(experiment.m, experiment.makeTable());
+            gui.formFactorColumnNames();
             gui.start();
         }else{restartAlgorithm();}
     }

@@ -3,8 +3,8 @@ package MOPE.Lab3;
 import MOPE.Lab2.FullFactorExperiment;
 
 public class FractionalThreefactorExperiment extends FullFactorExperiment {// extends for using some methods
-    public int[][] naturalizedFactorValues;
-    public int[][] normalizedFactorValues;
+    public double[][] naturalizedFactorValues;
+    public double[][] normalizedFactorValues;
     public int [][] yExperimentalValues;
     public int [][] xValues;
     public int N;
@@ -19,7 +19,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
 
     public String[][] makeTable(){
         // set table for print in future
-        String[][] result = new String[2*N][m+N];
+        String[][] result = new String[2*N][m+bCoefficents.length];
         for (int i = 0; i < normalizedFactorValues.length; i++) {
             for (int j = 0; j < normalizedFactorValues[0].length; j++) {
                 result[i][j+1] = String.valueOf(naturalizedFactorValues[i][j]);
@@ -29,8 +29,9 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         }
 
         for (int i = 0; i < yExperimentalValues.length; i++) {
-            for (int j = 0; j < yExperimentalValues[0].length; j++) {
-                result[i][j+N] = result[i+N][j+N] = String.valueOf(yExperimentalValues[i][j]);
+            for (int j = 0; j < m; j++) {
+                result[i][j+bCoefficents.length] = result[i+N][j+bCoefficents.length-1] =
+                        String.valueOf(yExperimentalValues[i][j]);
             }
         }
         return result;
@@ -42,8 +43,8 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         System.out.println("y = bo + b1*x1 + b2*x2 + b3*x3");
         N = 4;
         xValues = new int[][]{{x1Min, x1Max},{x2Min,x2Max},{x3Min,x3Max}};
-        naturalizedFactorValues = new int[N][3];
-        normalizedFactorValues = new int[N][3];
+        naturalizedFactorValues = new double[N][3];
+        normalizedFactorValues = new double[N][3];
         fillByCoefficients(normalizedFactorValues,-1,1,1,-1,1,-1);
         fillByCoefficients(naturalizedFactorValues, x1Min, x1Max,x2Max,x2Min,x3Max,x3Min);
         super.setyMax(200 + (x1Max+x2Max+x3Max)/3.0);
@@ -58,9 +59,9 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         yMediums = calculateMediums(yExperimentalValues);
         double mediumY = calculateSumDouble(yMediums)/yMediums.length;
         // get each column of factors
-        int[] firstColumnInNaturalized = matrixCalculator.getColumn(0,naturalizedFactorValues);
-        int[] secondColumnInNaturalized = matrixCalculator.getColumn(1,naturalizedFactorValues);
-        int[] thirdColumnInNaturalized = matrixCalculator.getColumn(2,naturalizedFactorValues);
+        double[] firstColumnInNaturalized = matrixCalculator.getColumn(0,naturalizedFactorValues);
+        double[] secondColumnInNaturalized = matrixCalculator.getColumn(1,naturalizedFactorValues);
+        double[] thirdColumnInNaturalized = matrixCalculator.getColumn(2,naturalizedFactorValues);
 
         double mx1 = calculateSum(firstColumnInNaturalized)/N;
         double mx2 = calculateSum(secondColumnInNaturalized)/N;
@@ -75,11 +76,11 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         double a33 = calculateSumOfEachSquare(thirdColumnInNaturalized)/N;
 
         double a13 = matrixCalculator.calculateSumTwoArrayForEach(firstColumnInNaturalized,
-                converIntArrayToDoubleArray(thirdColumnInNaturalized))/N;//a13 = 31; N - num of experiments
+                thirdColumnInNaturalized)/N;//a13 = 31; N - num of experiments
         double a12 = matrixCalculator.calculateSumTwoArrayForEach(firstColumnInNaturalized,
-                converIntArrayToDoubleArray(secondColumnInNaturalized))/N;//a12 = a21
+                secondColumnInNaturalized)/N;//a12 = a21
         double a23 =  matrixCalculator.calculateSumTwoArrayForEach(secondColumnInNaturalized,
-                converIntArrayToDoubleArray(thirdColumnInNaturalized))/N;// a23 = a32
+                thirdColumnInNaturalized)/N;// a23 = a32
 
         //make our base matrix for determinant
         matrixCalculator.formMatrixOfTheFourthOrder(1, mx1, mx2,mx3,
@@ -112,21 +113,13 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         }
     }
 
-    public double calculateSumOfEachSquare(int [] array){
-        int result = 0;
-        for (int value : array) {
+    public double calculateSumOfEachSquare(double [] array){
+        double result = 0;
+        for (double value : array) {
             result += Math.pow(value, 2);
         }
         return result;
     }
-
-    public double[] converIntArrayToDoubleArray(int[] array) {
-        double[] doubles = new double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            doubles[i] =array[i];
-        }return doubles;
-    }
-
 
     public double calculateSumDouble(double [] mass) {
         double result = 0;
@@ -136,11 +129,11 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         return result;
     }
 
-    void fillByCoefficients(int[][] matrix,int x1Min, int x1Max, int x2Max, int x2Min, int x3Max, int x3Min){
+    void fillByCoefficients(double[][] matrix,int x1Min, int x1Max, int x2Max, int x2Min, int x3Max, int x3Min){
         //bringing together all data in right order as in plan matrix
-        matrix[0] = new int[]{x1Min, x2Min, x3Min};
-        matrix[1] = new int[]{x1Min, x2Max, x3Max};
-        matrix[2] = new int[]{x1Max, x2Min, x3Max};
-        matrix[3] = new int[]{x1Max, x2Max, x3Min};
+        matrix[0] = new double[]{x1Min, x2Min, x3Min};
+        matrix[1] = new double[]{x1Min, x2Max, x3Max};
+        matrix[2] = new double[]{x1Max, x2Min, x3Max};
+        matrix[3] = new double[]{x1Max, x2Max, x3Min};
     }
 }

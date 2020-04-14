@@ -9,7 +9,7 @@ public class MatrixCalculator {
         return calculateDeterminant(matrix);
     }
 
-    double calculateDeterminant(double[][] matrix){
+    public double calculateDeterminant(double[][] matrix){
         // matrix should be square
         if (matrix.length == 1){
             return matrix[0][0];
@@ -58,7 +58,7 @@ public class MatrixCalculator {
         return matrix;
     }
 
-    double[][] changeSomeColumn(double[][] anyMatrix, double[] columnArray, int column){
+    public double[][] changeSomeColumn(double[][] anyMatrix, double[] columnArray, int column){
         // length of column should == num of rows in matrix
         double[][] resultMatrix = copyMatrix(anyMatrix);
         for (int i = 0; i <anyMatrix.length ; i++) {
@@ -77,7 +77,7 @@ public class MatrixCalculator {
         return changeSomeColumn(matrix, columnArray,column);
     }
 
-    public double calculateSumTwoArrayForEach(int[] first, double[] second){
+    public double calculateSumTwoArrayForEach(double[] first, double[] second){
         // look through all elem in both arrays and multiply elements with the same index, returns sum of it
         double result = 0;
         if (first.length == second.length){
@@ -88,8 +88,8 @@ public class MatrixCalculator {
         return result;
     }
 
-    public int[] getColumn(int column, int[][] array){
-        int[] result = new int[array.length];
+    public double[] getColumn(int column, double[][] array){
+        double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++) {
             result[i] = array[i][column];
         }return result;
