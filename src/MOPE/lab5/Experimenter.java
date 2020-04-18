@@ -18,12 +18,16 @@ public class Experimenter {
     }
 
     private void makeACheck() {
-        checkForHomogenity();
+        checkForHomogenity();//set correct m
         experiment.calculateNaturalizedBCoeficients();
         auditor.checkRegressionEquation(experiment.bCoefficents,
-                experiment.naturalizedFactorValues, experiment.yMediums);
+                experiment.naturalizedFactorValues, experiment.yMediums);//calculate and show loyalty of coefficients
+
+        //detects isn`t significant coefficients
         auditor.checkStudent(dispersions, experiment.m, experiment.calculateMediums(experiment.yExperimentalValues),
                 experiment.normalizedFactorValues, experiment.bCoefficents, experiment.naturalizedFactorValues);
+
+        // check model adequacy
         auditor.checkFisher(experiment.m,experiment.calculateMediums(experiment.yExperimentalValues));
         gui = new GUI(experiment.m, experiment.makeTable());
         gui.formFactorColumnNames(new String[]{"X0", "X1", "X2", "X3", "X12", "X13", "X23", "X123","X11","X22","X33"});
@@ -33,7 +37,7 @@ public class Experimenter {
 
     void checkForHomogenity(){//set our experiment for right m
         while (true){
-            dispersions = experiment.calculateDispersionMatrix(experiment.yExperimentalValues);
+            dispersions = experiment.calculateDispersionMatrix(experiment.yExperimentalValues);//returns true if homogeneous
             if(auditor.checkKohren(dispersions, experiment.m-1, experiment.N)){
                 System.out.println("the dispersion is homogeneous by Kohren with q = 0.05, m = " + experiment.m);
                 break;
