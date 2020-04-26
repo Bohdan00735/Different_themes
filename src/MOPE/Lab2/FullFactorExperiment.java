@@ -7,7 +7,7 @@ public class FullFactorExperiment {
     public int m;
     int x1Max, x1Min, x2Max, x2Min;
     public double yMin, yMax;
-    int[][] y;
+    double[][] y;
     public int x11 = -1;
     public int x21 = -1;
     public int x22 = -1;
@@ -85,25 +85,23 @@ public class FullFactorExperiment {
                 (a0 +a1*x1Min + a2*x2Max), mediumValuesOfy[2]);
     }
 
-    public int[][] generateInDiap(int min, int max, int m, int raws) {
-        int[][] result = new int[raws][m];
-        Random random = new Random();
+    public double[][] generateInDiap(int min, int max, int m, int raws) {
+        double[][] result = new double[raws][m];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j <raws ; j++) {
                 int var = max-min;
-                result[j][i] = (int)(Math.random()*++(var)+min);
+                result[j][i] = (Math.random()*++(var)+min);
             }
         }
         return result;
     }
 
-    public int[][] generateInDiap(int raws) {
-        int[][] result = new int[raws][m];
-        Random random = new Random();
+    public double[][] generateInDiap(int raws) {
+        double[][] result = new double[raws][m];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j <raws ; j++) {
                 double var = yMax-yMin;
-                result[j][i] = (int)(Math.random()*++(var)+yMin);
+                result[j][i] = (Math.random()*++(var)+yMin);
             }
         }
         return result;
@@ -143,7 +141,7 @@ public class FullFactorExperiment {
         }
     }
 
-    public double[] calculateMediums(int[][] mass){
+    public double[] calculateMediums(double[][] mass){
         double[] result = new double[mass.length];
         for (int i = 0; i < mass.length; i++) {
             result[i] += calculateSum(mass[i])/mass[i].length;
@@ -167,16 +165,16 @@ public class FullFactorExperiment {
         }return result;
     }
 
-    public double calculateDispersion(double medium, int[] mass){
+    public double calculateDispersion(double medium, double[] mass){
         double result = 0;
-        for (int i :
+        for (double i :
                 mass) {
             result += Math.pow((i - medium), 2);
         }
         return result/mass.length;
     }
 
-    public double[] calculateDispersionMatrix(int[][]experementalMatrix){
+    public double[] calculateDispersionMatrix(double[][]experementalMatrix){
         double[] midlesArray = calculateMediums(experementalMatrix);
         double[] dispersions = new double[midlesArray.length];
         for (int i = 0; i < dispersions.length; i++) {

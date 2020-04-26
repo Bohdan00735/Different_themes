@@ -3,17 +3,15 @@ package MOPE.lab5;
 import MOPE.Lab4.ThreeFactorExperimentWithInteractionEffect;
 
 public class ThreeFactorExperimentWithSquareMembers extends ThreeFactorExperimentWithInteractionEffect {
-    double l = 1.215;
+    double l = 1.73;
 
     public ThreeFactorExperimentWithSquareMembers(int m, int x1Max, int x1Min, int x2Max, int x2Min, int x3Max, int x3Min) {
         super(m, x1Max, x1Min, x2Max, x2Min, x3Max, x3Min);
-
-        addSquareMembers();
     }
 
     public void addSquareMembers() {
         N = 15;
-        m = 3;
+        m = 2;
         System.out.println("Function with Square Members \n y = bo + b1*x1 + b2*x2 + b3*x3 + b12*x1*x2" +
                 " + b13*x1*x3 + b23*x2*x3 + b123*x1*x2*x3 + b11*x1^2 + b22*x2^2 + b33*x3^2");
         naturalizedFactorValues = addFactorsForExperimentWithSquareMembers(xValues);
@@ -50,7 +48,7 @@ public class ThreeFactorExperimentWithSquareMembers extends ThreeFactorExperimen
         }return tableWithoutSquare;
     }
 
-    void calculateNaturalizedBCoeficients(){
+    public void calculateNaturalizedBCoeficients(){
         double[] xMediums = calculateMediumsInColumns(naturalizedFactorValues);
         yMediums = calculateMediums(yExperimentalValues);
         double[] aiValues = calculateAI();

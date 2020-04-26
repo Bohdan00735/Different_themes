@@ -36,14 +36,6 @@ public class ThreeFactorExperimentWithInteractionEffect extends FractionalThreef
         }
     }
 
-    public int findMaxInColumn(int[][] matrix, int column){
-        int result = matrix[0][column];
-        for (int[] raw:matrix
-             ) {
-            if (raw[column] > result){result = raw[column];}
-        }return result;
-    }
-
     public double findMaxInColumn(double[][] matrix, int column){
         double result = matrix[0][column];
         for (double[] raw:matrix
@@ -64,14 +56,10 @@ public class ThreeFactorExperimentWithInteractionEffect extends FractionalThreef
         System.out.println("add Interaction Effect \n y = bo + b1*x1 + b2*x2 + b3*x3 + b12*x1*x2" +
                 " + b13*x1*x3 + b23*x2*x3 + b123*x1*x2*x3");
         N = 8;
-        m = 3;
+        m = 2;
         naturalizedFactorValues = addInteractionFactors(addParams(xValues, new double[8][7]));
         normalizedFactorValues = addInteractionFactors(
                 addParams(new int[][]{{-1,1},{-1,1},{-1,1}}, new double[8][7]));
-    }
-
-    public void generateNewExperementalValues(){
-        yExperimentalValues = generateInDiap(N);
     }
 
     public double[][] addInteractionFactors(double[][] table){

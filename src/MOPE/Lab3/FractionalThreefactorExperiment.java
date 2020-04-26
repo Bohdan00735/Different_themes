@@ -2,10 +2,11 @@ package MOPE.Lab3;
 
 import MOPE.Lab2.FullFactorExperiment;
 
+
 public class FractionalThreefactorExperiment extends FullFactorExperiment {// extends for using some methods
     public double[][] naturalizedFactorValues;
     public double[][] normalizedFactorValues;
-    public int [][] yExperimentalValues;
+    public double[][] yExperimentalValues;
     public int [][] xValues;
     public int N;
     public double[] bCoefficents = new double[4];// because we have three factor fractional experiment
@@ -53,6 +54,7 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
         yExperimentalValues = generateInDiap((int)yMin, (int)yMax, m, N);
     }
 
+
     @Override
     public void calculateNormCoefficient() {
         //find medium values of function for rows
@@ -90,6 +92,10 @@ public class FractionalThreefactorExperiment extends FullFactorExperiment {// ex
 
         double[] columnToChange = new double[]{mediumY, a1,a2,a3};// our right part of equation
         makeCalculationOfBCoefficient(columnToChange);
+    }
+
+    public void generateNewExperimentalValues(){
+        yExperimentalValues = generateInDiap(N);
     }
 
     public void makeAudit(){
