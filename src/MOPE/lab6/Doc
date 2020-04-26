@@ -1,5 +1,5 @@
 Methods that realise algorithm in the instruction were created in class ExperimentalAlgorithm.
  Those methods use classes and methods that was created earlier and converted to format of this lab.
  Also was overwrite method of filling of experimental values
- In addition, method that set rite m by checking act was transferred to lab3.Auditor, which contains all check methods with useful tables.
+ In addition, method that set rite m by checking Kohren act was transferred to lab3.Auditor, which contains all check methods with useful tables.
 
