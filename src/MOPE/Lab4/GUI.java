@@ -25,14 +25,6 @@ public class GUI {
         });
     }
 
-    public void formFactorColumnNames(){
-        String[] faktorColumnNames = new String[]{"X0", "X1", "X2", "X3", "X12", "X13", "X23", "X123"};
-        System.arraycopy(faktorColumnNames, 0, columnNames, 0, 4);
-        if (experementTable[0].length - m == 8){
-            System.arraycopy(faktorColumnNames, 4, columnNames, 4, faktorColumnNames.length - 4);
-        }
-    }
-
     public void formFactorColumnNames(String[] names){
         System.arraycopy(names, 0, columnNames, 0, names.length);
     }
