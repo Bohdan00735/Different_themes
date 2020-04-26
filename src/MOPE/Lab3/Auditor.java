@@ -9,7 +9,7 @@ import static java.lang.StrictMath.sqrt;
 public class Auditor {
     double[][] KohrenTable = new double[][]{{0.9065,0.7679,0.6841,0.6287,0.5892,0.5598,0.5365,0.5175, 0.5017, 0.4884,0.25},//f2=4
                                             {0.6798, 0.5157,0.4377,3910,3595,3362,3185,3043,0.2926,0.2829,0.1250},
-            {4.709,3.346,2.758,2.419,2.159,2.034,1.911,1.815,1.736,1.671,1.429,1.144,0.889,0.667}};//f2 = 8
+                                            {4.709,3.346,2.758,2.419,2.159,2.034,1.911,1.815,1.736,1.671,1.429,1.144,0.889,0.667}};//f2 = 8
     // there`re data for f2 = 4 or 8 and last num in each row for inf, q = 0.05
 
     double[][] FisherTable = new double[][]{
@@ -203,5 +203,18 @@ public class Auditor {
         ) {
             result+=i;
         }return result;
+    }
+
+    public void checkForHomogenity(FractionalThreefactorExperiment experiment){//set our experiment for right m
+        while (true){
+            double[] dispersions = experiment.calculateDispersionMatrix(experiment.yExperimentalValues);
+            if(checkKohren(dispersions, experiment.m-1, experiment.N)){
+                System.out.println("the dispersion is homogeneous by Kohren with q = 0.05, m = " + experiment.m);
+                break;
+            }else {System.out.println("the dispersion is NOT homogeneous by Kohren, m = " + experiment.m);
+                experiment.setM(experiment.m + 1);
+                experiment.generateNewExperimentalValues();
+            }
+        }
     }
 }
