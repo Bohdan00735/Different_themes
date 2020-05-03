@@ -16,9 +16,18 @@ public class ExperimentAlgorithm {
 
     public void start(){
         experiment.generateNewExperimentalValues();
+        dispersions = experiment.calculateDispersionMatrix(experiment.yExperimentalValues);
+
+        if (experiment.N == 8){//additional task
+            //if in experiment with interaction effect dispersion isn`t homogeneous - add square members
+            if(!auditor.checkKohren(dispersions, experiment.m-1, experiment.N)){
+                experiment.addSquareMembers();
+                start();
+            }
+        }
+
         auditor.checkForHomogenity(experiment);//set right m for our experiment, use Kohren check
         experiment.calculateNaturalizedBCoeficients();// calculate Coefficients by division of matrix
-        dispersions = experiment.calculateDispersionMatrix(experiment.yExperimentalValues);
         auditor.checkRegressionEquation(experiment.bCoefficents,
                 experiment.naturalizedFactorValues, experiment.yMediums);//calculate and show loyalty of coefficients
 

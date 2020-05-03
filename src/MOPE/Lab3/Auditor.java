@@ -89,7 +89,9 @@ public class Auditor {
         double gp = findMax(dispersions)/calculateSum(dispersions);
         int raw = 0;
         switch (f2){
-            case 8: raw = 1;
+            case 8:
+                raw = 1;
+                break;
             case 15: raw = 2;
         }// we get only 4 or 8 or 15 in this case, f2 = N
         try {
