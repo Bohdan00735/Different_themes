@@ -1,0 +1,18 @@
+Experimenter it`s a class which control all process.
+On the start main creates Experimenter with parameters given by var
+  In constructor
+  1.new Experiment is created class and experimental table is filled by factors for our experiment.
+    In parenting class was changed type of table int -> double. was refactored methods
+  2. Table with experimental values is filled for given param(on start m = 3)
+  3. Creates class which contained all check methods(It`s in Lab 3 Methods and tables have been supplemented for new parameters)
+  4. start of algorithm
+  Algorithm
+  1. Check for homogeneity(there is cycle which ends only when m is correct)
+  2. Generate naturalized coefficients of regression equation. For this purpose are created:
+     Table-row with medium values of x in each column(first row and first column)
+     Table with a values(all other space in matrix)
+     Table column with medium values of y(answers column)
+     Calculate every coefficient by division appropriate determinant on main(determinant is calculated in class that was created in lab3)
+  3. Substitute coefficients in our equations, calculate and compare with middle value of y in this row
+  4. After that make Student and Fisher check in the proven methods that were created for lab 3(only table additions were needed)
+  5. Show result with class GUI(lab4)
